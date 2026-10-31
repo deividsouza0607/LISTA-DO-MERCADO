@@ -19,3 +19,11 @@ COMANDOS DE VOZ TESTADOS NA LÓGICA DO APLICATIVO:
 - Reiniciar marcações: “desmarcar tudo”.
 
 O reconhecimento real da fala depende do microfone, da conexão, das permissões e do suporte do navegador. Foi feita validação da sintaxe JavaScript e testes automatizados da interpretação dos exemplos; o microfone físico não pode ser testado neste ambiente.
+
+ÁUDIO NO CELULAR:
+- Abra o aplicativo por um endereço HTTPS (não abra o arquivo HTML diretamente pelo gerenciador de arquivos).
+- Use Chrome atualizado no Android ou Safari/Chrome atualizado no iPhone, quando o navegador oferecer suporte ao reconhecimento de voz.
+- Autorize o microfone e confira se o volume de mídia está ligado.
+- Toque uma vez no botão do microfone para iniciar; toque novamente para pausar.
+- A voz falada pelo Lucky utiliza a síntese de voz instalada no próprio celular. A qualidade e a disponibilidade de vozes em português dependem do aparelho.
+- O reconhecimento de voz do navegador não é suportado por todos os celulares/navegadores. Se o botão informar incompatibilidade, use a digitação; não é possível garantir voz em todos os modelos apenas com HTML/JavaScript.

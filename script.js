@@ -2,7 +2,7 @@ const KEY='rancho_amigos_lista_v2';let products=[];
 try{products=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
 const $=id=>document.getElementById(id);
 function persist(){localStorage.setItem(KEY,JSON.stringify(products));draw()}
-function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=780;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.11,c.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.18);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.19);o.onended=()=>c.close()}catch(e){}}
+let sharedAudioContext=null;function beep(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!sharedAudioContext)sharedAudioContext=new AC();if(sharedAudioContext.state==='suspended')sharedAudioContext.resume();const c=sharedAudioContext,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=780;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.10,c.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.18);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.19)}catch(e){}}
 function add(value, quantity=1){
  let n=value.trim().replace(/^[-•*☐□✓✔]+\s*/,'').replace(/^\d+[\s.)-]+/,'').trim();
  if(!n)return;
@@ -116,38 +116,70 @@ let pendingVoiceItem = null;
 let pendingDeleteId = null;
 let restarting = false;
 
-// Lucky usa automaticamente a melhor voz em português do Brasil disponível no dispositivo.
+// Áudio otimizado para celulares (Android/iPhone): aguarda as vozes do sistema,
+// libera a síntese no primeiro toque e evita iniciar o microfone enquanto Lucky fala.
 let luckyVoice = null;
+let luckySpeaking = false;
+let speechUnlockRequested = false;
+let speechWatchdog = null;
 function chooseLuckyVoice(){
   if(!('speechSynthesis' in window)) return;
-  const voices = window.speechSynthesis.getVoices();
+  const voices = window.speechSynthesis.getVoices() || [];
   const ptBR = voices.filter(v => /^pt[-_]BR$/i.test(v.lang));
   const portuguese = ptBR.length ? ptBR : voices.filter(v => /^pt/i.test(v.lang));
-  // Dá preferência a vozes brasileiras de melhor qualidade/naturalidade quando instaladas.
   luckyVoice = portuguese.find(v => /natural|neural|google|francisca|luciana|antonio|microsoft/i.test(v.name)) || portuguese[0] || null;
 }
 if('speechSynthesis' in window){
   chooseLuckyVoice();
   window.speechSynthesis.onvoiceschanged = chooseLuckyVoice;
 }
+function unlockLuckyAudio(){
+  if(speechUnlockRequested) return;
+  speechUnlockRequested = true;
+  if('speechSynthesis' in window){
+    try{ window.speechSynthesis.resume(); }catch(e){}
+    // Alguns navegadores móveis só carregam a lista de vozes após a primeira interação.
+    chooseLuckyVoice();
+    setTimeout(chooseLuckyVoice,250);
+  }
+}
 function speakConfirmation(message, callback){
-  if(!('speechSynthesis' in window)){ if(callback) callback(); return; }
-  window.speechSynthesis.cancel();
+  if(!('speechSynthesis' in window)){
+    voiceStatus.textContent = message + ' (áudio não disponível neste navegador)';
+    if(callback) callback();
+    return;
+  }
+  const synth = window.speechSynthesis;
+  try{ synth.cancel(); }catch(e){}
+  luckySpeaking = true;
   chooseLuckyVoice();
-  const utterance = new SpeechSynthesisUtterance(message);
+  const utterance = new SpeechSynthesisUtterance(String(message));
   utterance.lang = 'pt-BR';
   if(luckyVoice) utterance.voice = luckyVoice;
-  utterance.rate = 0.90;   // ritmo mais calmo e fácil de entender
-  utterance.pitch = 1.08;  // tom um pouco mais acolhedor
+  utterance.rate = 0.92;
+  utterance.pitch = 1.02;
   utterance.volume = 1;
-  utterance.onend = ()=>{ if(callback) setTimeout(callback,500); };
-  utterance.onerror = ()=>{ if(callback) setTimeout(callback,500); };
-  window.speechSynthesis.speak(utterance);
+  let finished = false;
+  const finish = ()=>{
+    if(finished) return;
+    finished = true;
+    clearTimeout(speechWatchdog);
+    luckySpeaking = false;
+    if(callback) setTimeout(callback,350);
+  };
+  utterance.onend = finish;
+  utterance.onerror = finish;
+  // Fallback para celulares em que o evento onend não é disparado.
+  speechWatchdog = setTimeout(finish, Math.max(7000, String(message).length*115));
+  try{
+    synth.speak(utterance);
+    synth.resume();
+  }catch(e){ finish(); }
 }
 function listenAgain(){
-  if(!recognition || !voiceSessionActive)return;
+  if(!recognition || !voiceSessionActive || luckySpeaking) return;
   try{ recognition.start(); }
-  catch(e){ /* O reconhecimento já está ativo; onend tentará novamente. */ }
+  catch(e){ /* onend fará uma nova tentativa se o reconhecimento já estiver ocupado. */ }
 }
 function parseSpokenProduct(text){
   let value=normalizeText(text).replace(/[.,!?]/g,' ');
@@ -321,6 +353,10 @@ if(!SpeechRecognition){
   voiceButton.title='Reconhecimento de voz não disponível neste navegador';
   voiceStatus.textContent='Use Chrome ou Edge atualizado e permita o acesso ao microfone.';
   voiceStatus.classList.add('error');
+}else if(!window.isSecureContext && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
+  voiceButton.disabled=true;
+  voiceStatus.textContent='Para usar o microfone no celular, abra o aplicativo por um endereço HTTPS e permita o acesso ao microfone.';
+  voiceStatus.classList.add('error');
 }else{
   recognition=new SpeechRecognition();
   recognition.lang='pt-BR';
@@ -328,6 +364,7 @@ if(!SpeechRecognition){
   recognition.interimResults=false;
   recognition.maxAlternatives=3;
   voiceButton.addEventListener('click',()=>{
+    unlockLuckyAudio();
     if(voiceSessionActive){
       voiceSessionActive=false;
       try{recognition.stop()}catch(e){}
@@ -340,6 +377,7 @@ if(!SpeechRecognition){
     voiceMode='product';pendingVoiceItem=null;pendingDeleteId=null;
     voiceStatus.textContent='Estou ouvindo. Diga um comando ou produto.';
     voiceStatus.className='voice-status active';
+    // O toque libera o áudio do dispositivo; o reconhecimento começa imediatamente.
     listenAgain();
   });
   recognition.onstart=()=>{voiceButton.classList.add('listening');};
@@ -363,8 +401,8 @@ if(!SpeechRecognition){
   };
   recognition.onend=()=>{
     voiceButton.classList.remove('listening');
-    // Reinicia apenas se a conversa estiver ativa e nenhum áudio estiver sendo reproduzido.
-    if(voiceSessionActive && !window.speechSynthesis.speaking){
+    // Reinicia apenas quando Lucky terminar de falar.
+    if(voiceSessionActive && !luckySpeaking && !(window.speechSynthesis && window.speechSynthesis.speaking)){ 
       setTimeout(()=>{if(voiceSessionActive)listenAgain()},350);
     }
   };
