@@ -1,0 +1,91 @@
+:root{
+ --blue:#073b78;--blue2:#0b5bb5;--blue3:#eaf3ff;--blue4:#d7e8ff;
+ --white:#fff;--ink:#17263b;--muted:#718096;--line:#e4edf7;
+ --shadow:0 12px 32px rgba(7,59,120,.09)
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(145deg,#edf5ff 0%,#f8fbff 48%,#eaf2fc 100%);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.app{max-width:560px;margin:auto;min-height:100vh;background:rgba(255,255,255,.97);box-shadow:0 0 45px rgba(10,53,105,.12);overflow:hidden}
+header{position:relative;padding:19px 18px 18px;background:linear-gradient(125deg,#062e63,#0a4b96 60%,#1674d1);border-bottom:4px solid #dcecff;overflow:hidden}
+header:before{content:"";position:absolute;width:240px;height:240px;border:1px solid #ffffff20;border-radius:50%;right:-95px;top:-145px;box-shadow:0 0 0 22px #ffffff0c,0 0 0 45px #ffffff08;pointer-events:none}
+.brand{position:relative;display:flex;align-items:center;gap:12px;z-index:1}
+.brand img{width:62px;height:62px;object-fit:contain;background:#fff;border-radius:14px;padding:3px;box-shadow:0 5px 15px #001b3d55}
+.brand h1{font-size:18px;line-height:1.15;margin:0;color:#fff;letter-spacing:.2px}
+.brand h1 span{color:#dcecff!important}
+.brand p{font-size:12px;color:#d8e9ff;margin:5px 0 0}
+main{padding:17px}
+h2{font-size:15px;margin:0 0 12px;color:var(--blue)}
+.add{display:flex;gap:8px}
+.add input{min-width:0;flex:1;border:1px solid #d7e4f2;border-radius:13px;padding:14px;font-size:15px;outline:none;background:#fbfdff;transition:border .2s,box-shadow .2s,transform .2s}
+.add input:focus{border-color:var(--blue2);box-shadow:0 0 0 4px #0b5bb51a;transform:translateY(-1px)}
+button,.photo-label{border:0;border-radius:11px;font-weight:700;cursor:pointer;font-size:14px;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+button:active,.photo-label:active{transform:scale(.96)}
+.add button{background:linear-gradient(135deg,#0b5bb5,#073b78);color:#fff;padding:0 17px;box-shadow:0 5px 12px #073b7826}
+.add button:hover{box-shadow:0 8px 17px #073b7840;transform:translateY(-2px)}
+.photo-label{display:flex;align-items:center;justify-content:center;gap:8px;background:#edf5ff;color:var(--blue);padding:13px;width:100%;margin-top:10px;border:1px solid #dceaff}
+.photo-label:hover{background:#e0eeff;transform:translateY(-1px)}
+#photo{display:none}
+.tip{font-size:12px;color:var(--muted);line-height:1.45;margin:9px 0 0}
+.statusbox{margin:14px 0;padding:15px;background:linear-gradient(135deg,#f7fbff,#edf5ff);border:1px solid #dceaff;border-radius:15px;box-shadow:0 5px 16px #0b5bb50b}
+.statusline{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;color:#51647d}
+.statusline strong{color:var(--blue2)}
+.track{height:9px;background:#dce8f6;border-radius:20px;overflow:hidden}
+.track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#0b5bb5,#5ca8ff);border-radius:20px;transition:width .55s cubic-bezier(.2,.8,.2,1);position:relative}
+.track span:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,#ffffff99 50%,transparent 80%);animation:shine 2.4s linear infinite}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:20px 0 10px}
+.list-head h2{margin:0;font-size:14px}
+.clear{background:#f0f5fb;color:#5c6f87;font-size:11px;padding:8px 10px;white-space:nowrap}
+.clear:hover{background:#e2edfa;color:var(--blue)}
+ul{padding:0;margin:0;list-style:none}
+.item{display:flex;align-items:center;gap:10px;padding:12px 10px;border:1px solid #e6edf6;border-radius:14px;margin-bottom:8px;background:#fff;box-shadow:0 3px 10px #0b3d7808;animation:itemIn .35s cubic-bezier(.2,.8,.2,1) both;transition:background .25s,border .25s,box-shadow .25s,transform .25s}
+.item:hover{transform:translateY(-2px);box-shadow:0 7px 17px #0b3d7812}
+.item.done{background:linear-gradient(105deg,#edf5ff,#fff);border-color:#b8d5f8;box-shadow:inset 3px 0 0 #0b5bb5,0 3px 10px #0b3d7808}
+@keyframes itemIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.mark{width:31px;height:31px;flex:none;border:2px solid #b7c9df;border-radius:10px;background:#fff;color:#fff;font-size:19px;display:grid;place-items:center;padding:0;transition:all .22s cubic-bezier(.2,.8,.2,1)}
+.mark:hover{border-color:var(--blue2);transform:scale(1.06)}
+.item.done .mark{background:linear-gradient(135deg,#1474d2,#073b78);border-color:#0b5bb5;animation:checkPop .35s cubic-bezier(.2,1.6,.4,1)}
+.item.done .mark:after{content:"✓";text-shadow:0 1px 2px #001b3d66}
+@keyframes checkPop{0%{transform:scale(.7)}65%{transform:scale(1.18)}100%{transform:scale(1)}}
+.product{flex:1;font-size:15px;overflow-wrap:anywhere;min-width:55px;transition:color .2s}
+.item.done .product{color:#778ba4;text-decoration:line-through;text-decoration-thickness:1.5px}
+.qty{display:flex;align-items:center;gap:4px;background:#f0f5fb;border:1px solid #e1eaf5;border-radius:10px;padding:3px}
+.qty button{width:26px;height:28px;border-radius:7px;background:#fff;color:var(--blue);font-size:17px;padding:0;box-shadow:0 1px 3px #092e5712}
+.qty button:hover{background:var(--blue);color:#fff}
+.qty span{min-width:19px;text-align:center;font-size:13px;font-weight:700;color:var(--blue)}
+.state{font-size:9px;color:#8b99aa;white-space:nowrap;letter-spacing:.25px}
+.item.done .state{color:var(--blue2);font-weight:800}
+.remove{background:transparent;color:#a7b3c1;font-size:21px;padding:4px}
+.remove:hover{color:#d34d5c;transform:rotate(90deg)}
+.empty{color:#8191a5;font-size:14px;padding:34px 10px;text-align:center;animation:itemIn .4s ease both}
+#recognized{display:none;margin-top:12px}
+textarea{width:100%;border:1px solid #d7e4f2;border-radius:11px;padding:11px;font:14px Arial;outline:none}
+#import{width:100%;padding:13px;background:linear-gradient(135deg,#0b5bb5,#073b78);color:#fff;margin-top:8px}
+#ocrStatus{font-size:12px;color:var(--blue2);margin-top:8px}
+@media(max-width:420px){main{padding:13px}.brand h1{font-size:16px}.add button{padding:0 12px}.item{gap:7px;padding:11px 7px}.product{font-size:14px}.qty{gap:2px}.qty button{width:24px;height:27px}.state{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+
+/* Rodapé do Atacarejo Rancho dos Amigos */
+.market-footer{margin-top:24px;background:linear-gradient(135deg,#062e63,#0b4b91);color:#fff;border-top:4px solid #dcecff;padding:22px 18px 16px}
+.footer-inner{max-width:560px;margin:0 auto}
+.footer-brand{font-size:13px;font-weight:800;letter-spacing:.7px;margin-bottom:14px;color:#fff}
+.footer-brand strong{display:block;font-size:17px;margin-top:3px}
+.footer-info{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.footer-info p{font-size:12px;line-height:1.65;color:#e2edfb;margin:0}
+.footer-info p span{font-size:15px}
+.footer-info a{color:#fff;text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.footer-credit{border-top:1px solid #ffffff35;margin-top:17px;padding-top:12px;text-align:center;font-size:11px;color:#d7e6f8}
+.footer-credit a{color:#fff;font-weight:800;text-decoration:none}
+.footer-credit a:hover,.footer-info a:hover{color:#c7e0ff}
+@media(max-width:390px){.footer-info{grid-template-columns:1fr;gap:9px}.market-footer{padding:19px 15px 14px}}
+
+/* Entrada de produtos por voz */
+.voice-btn{width:48px;flex:none;padding:0;background:#eaf3ff;color:#073b78;border:1px solid #d2e4fa;font-size:20px;box-shadow:0 3px 9px #073b7810}
+.voice-btn:hover{background:#dcecff;transform:translateY(-1px)}
+.voice-btn.listening{background:#eaf1ff;color:#0b5bb5;border-color:#0b5bb5;animation:micPulse 1s ease-in-out infinite;box-shadow:0 0 0 0 #0b5bb544}
+@keyframes micPulse{0%{box-shadow:0 0 0 0 #0b5bb544;transform:scale(1)}70%{box-shadow:0 0 0 9px #0b5bb500;transform:scale(1.04)}100%{box-shadow:0 0 0 0 #0b5bb500;transform:scale(1)}}
+.voice-status{font-size:11px;color:#718096;min-height:17px;margin:8px 2px 0;line-height:1.4}
+.voice-status.active{color:#0b5bb5;font-weight:700}
+.voice-status.error{color:#bd3d4b}
+@media(max-width:420px){.voice-btn{width:43px}}

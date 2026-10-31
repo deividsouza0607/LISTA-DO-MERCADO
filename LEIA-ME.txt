@@ -1,0 +1,20 @@
+LISTA DE COMPRAS — ATACAREJO RANCHO DOS AMIGOS
+
+Arquivos:
+- index.html: estrutura da aplicação
+- style.css: visual azul e branco, animações e controles
+- script.js: lista, quantidades, marcação, sons, leitura de foto e voz
+
+Como usar:
+1. Extraia todos os arquivos da pasta ZIP.
+2. Mantenha index.html, style.css e script.js na mesma pasta.
+3. Abra index.html no navegador.
+
+Entrada por voz:
+- Toque no botão do microfone e diga o nome do produto.
+- Confira o texto reconhecido e toque em Adicionar.
+- O aplicativo falará: "OK, item incluído".
+- O reconhecimento depende de navegador compatível (Chrome/Edge), permissão de microfone e conexão/ambiente seguro (HTTPS ou localhost).
+
+Leitura por foto usa Tesseract.js via CDN e precisa de internet.
+A lista é salva no armazenamento local do navegador/dispositivo.
