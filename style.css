@@ -34,6 +34,9 @@ button:active,.photo-label:active{transform:scale(.96)}
 .track span:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,#ffffff99 50%,transparent 80%);animation:shine 2.4s linear infinite}
 @keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 .list-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:20px 0 10px}
+.list-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+.uncheck-all{background:#eaf8ef;color:#168447;border:1px solid #c9ecd5;font-size:11px;padding:8px 10px;white-space:nowrap}
+.uncheck-all:hover{background:#d9f2e2;color:#0b6635}
 .list-head h2{margin:0;font-size:14px}
 .clear{background:#f0f5fb;color:#5c6f87;font-size:11px;padding:8px 10px;white-space:nowrap}
 .clear:hover{background:#e2edfa;color:var(--blue)}
@@ -46,6 +49,11 @@ ul{padding:0;margin:0;list-style:none}
 .mark:hover{border-color:var(--blue2);transform:scale(1.06)}
 .item.done .mark{background:linear-gradient(135deg,#1474d2,#073b78);border-color:#0b5bb5;animation:checkPop .35s cubic-bezier(.2,1.6,.4,1)}
 .item.done .mark:after{content:"✓";text-shadow:0 1px 2px #001b3d66}
+/* Confirmação de inclusão: ✓ verde animado sem marcar como comprado */
+.item.just-added{border-color:#65c985;background:linear-gradient(105deg,#effff3,#fff);box-shadow:inset 3px 0 0 #20a94b,0 5px 18px #20a94b22;animation:addedGlow .55s ease both}
+.item.just-added .mark{background:linear-gradient(135deg,#31c766,#13863b);border-color:#13863b;animation:checkPop .45s cubic-bezier(.2,1.6,.4,1)}
+.item.just-added .mark:after{content:"✓";color:#fff;font-weight:900;text-shadow:0 1px 2px #07552255}
+@keyframes addedGlow{0%{box-shadow:0 0 0 0 #20a94b00}45%{box-shadow:0 0 0 5px #20a94b22,0 5px 18px #20a94b22}100%{box-shadow:inset 3px 0 0 #20a94b,0 5px 18px #20a94b22}}
 @keyframes checkPop{0%{transform:scale(.7)}65%{transform:scale(1.18)}100%{transform:scale(1)}}
 .product{flex:1;font-size:15px;overflow-wrap:anywhere;min-width:55px;transition:color .2s}
 .item.done .product{color:#778ba4;text-decoration:line-through;text-decoration-thickness:1.5px}
@@ -62,7 +70,7 @@ ul{padding:0;margin:0;list-style:none}
 textarea{width:100%;border:1px solid #d7e4f2;border-radius:11px;padding:11px;font:14px Arial;outline:none}
 #import{width:100%;padding:13px;background:linear-gradient(135deg,#0b5bb5,#073b78);color:#fff;margin-top:8px}
 #ocrStatus{font-size:12px;color:var(--blue2);margin-top:8px}
-@media(max-width:420px){main{padding:13px}.brand h1{font-size:16px}.add button{padding:0 12px}.item{gap:7px;padding:11px 7px}.product{font-size:14px}.qty{gap:2px}.qty button{width:24px;height:27px}.state{font-size:8px}}
+@media(max-width:420px){.list-head{align-items:flex-start;flex-direction:column}.list-actions{width:100%;justify-content:flex-start}.list-actions button{flex:1}main{padding:13px}.brand h1{font-size:16px}.add button{padding:0 12px}.item{gap:7px;padding:11px 7px}.product{font-size:14px}.qty{gap:2px}.qty button{width:24px;height:27px}.state{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
 
@@ -89,3 +97,19 @@ textarea{width:100%;border:1px solid #d7e4f2;border-radius:11px;padding:11px;fon
 .voice-status.active{color:#0b5bb5;font-weight:700}
 .voice-status.error{color:#bd3d4b}
 @media(max-width:420px){.voice-btn{width:43px}}
+
+/* Legenda dos comandos por voz */
+.voice-help{margin:9px 0 3px;border:1px solid #dceaff;border-radius:11px;background:#f7fbff;color:#42556e;font-size:12px;overflow:hidden}
+.voice-help summary{padding:11px 12px;cursor:pointer;font-weight:700;color:#073b78;list-style:none}
+.voice-help summary::-webkit-details-marker{display:none}
+.voice-help summary:after{content:'＋';float:right;font-size:15px}
+.voice-help[open] summary:after{content:'−'}
+.voice-help-content{padding:0 12px 11px;line-height:1.5}
+.voice-help-content p{margin:7px 0}
+.voice-help-content strong{color:#073b78}
+.voice-help-content small{display:block;color:#718096;margin-top:8px}
+
+/* Lista básica pré-definida */
+.basic-list-btn{display:block;width:100%;margin-top:13px;padding:13px 12px;background:linear-gradient(135deg,#168847,#0c6635);color:#fff;box-shadow:0 5px 13px #16884725}
+.basic-list-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px #16884735}
+.basic-list-note{margin:6px 2px 0;color:var(--muted);font-size:11px;line-height:1.4}

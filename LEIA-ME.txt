@@ -1,20 +1,21 @@
-LISTA DE COMPRAS — ATACAREJO RANCHO DOS AMIGOS
+APLICATIVO - ATACAREJO RANCHO DOS AMIGOS
 
 Arquivos:
-- index.html: estrutura da aplicação
-- style.css: visual azul e branco, animações e controles
-- script.js: lista, quantidades, marcação, sons, leitura de foto e voz
+- index.html: estrutura da página
+- style.css: aparência e responsividade
+- script.js: lista, comandos e funcionalidades
 
-Como usar:
-1. Extraia todos os arquivos da pasta ZIP.
-2. Mantenha index.html, style.css e script.js na mesma pasta.
-3. Abra index.html no navegador.
+Novidade: botão “Desmarcar tudo”. Ele desmarca todos os produtos já colocados na cesta, mantendo os produtos e suas quantidades na lista. O botão “Limpar comprados” continua separado e remove os produtos marcados.
 
-Entrada por voz:
-- Toque no botão do microfone e diga o nome do produto.
-- Confira o texto reconhecido e toque em Adicionar.
-- O aplicativo falará: "OK, item incluído".
-- O reconhecimento depende de navegador compatível (Chrome/Edge), permissão de microfone e conexão/ambiente seguro (HTTPS ou localhost).
+Para usar, extraia os arquivos na mesma pasta e abra index.html. Para reconhecimento de voz, utilize Chrome ou Edge em HTTPS ou localhost e permita o acesso ao microfone.
 
-Leitura por foto usa Tesseract.js via CDN e precisa de internet.
-A lista é salva no armazenamento local do navegador/dispositivo.
+
+COMANDOS DE VOZ TESTADOS NA LÓGICA DO APLICATIVO:
+- Saudação: “Olá, Lucky”.
+- Inclusão: “arroz dois”, “dois arroz”, “2 arroz”, “arroz quantidade 2” e “dois pacotes de arroz”.
+- Quantidade por extenso: “meia dúzia de ovos” e “uma dúzia de ovos”.
+- Consultas: “quantos itens tem na lista?”, “o que falta pegar?”, “o que falta comprar?” e “o que já coloquei na cesta?”.
+- Exclusão: “excluir arroz” ou “remover leite”, seguida de confirmação ou cancelamento.
+- Reiniciar marcações: “desmarcar tudo”.
+
+O reconhecimento real da fala depende do microfone, da conexão, das permissões e do suporte do navegador. Foi feita validação da sintaxe JavaScript e testes automatizados da interpretação dos exemplos; o microfone físico não pode ser testado neste ambiente.

@@ -21,7 +21,25 @@
   <button type="button" id="voiceBtn" class="voice-btn" aria-label="Adicionar produto por voz" title="Falar produto">🎙️</button>
   <button type="submit">Adicionar</button>
 </form>
-<div id="voiceStatus" class="voice-status" aria-live="polite">Toque no microfone e diga o nome do produto.</div>
+<div id="voiceStatus" class="voice-status" aria-live="polite">Olá! Eu sou o Lucky. Diga “Olá, Lucky” para começar ou fale um produto para sua lista.</div>
+<details class="voice-help">
+  <summary>📖 Legenda dos comandos por voz</summary>
+  <div class="voice-help-content">
+    <p><strong>👋 Conversar com Lucky:</strong> toque no microfone e diga “Olá, Lucky”. Ele responderá: “Olá! Qual a tarefa de hoje?”. Depois, diga o que deseja fazer. O Lucky continuará ouvindo até você tocar novamente no microfone para pausar.</p>
+    <p><strong>➕ Adicionar:</strong> diga “arroz, quantidade 2”, “dois arroz” ou “2 arroz”. O aplicativo perguntará se deseja confirmar.</p>
+    <p><strong>🧺 Lista básica:</strong> toque em “Carregar lista básica de mercado” ou diga “adicionar lista básica”. O Lucky inclui produtos essenciais sem duplicar os que já estão na lista.</p>
+    <p><strong>📊 Consultar a lista:</strong> pergunte “quantos produtos foram incluídos?” ou “quantos itens tem na lista?”. Lucky informa produtos e unidades.</p>
+    <p><strong>🧺 O que falta pegar:</strong> pergunte “o que falta pegar?”, “o que falta comprar?” ou “quais produtos estão pendentes?”. Lucky fala os produtos ainda não colocados na cesta e suas quantidades.</p>
+    <p><strong>✅ O que já peguei:</strong> pergunte “o que já coloquei na cesta?”.</p>
+    <p><strong>↺ Desmarcar tudo:</strong> diga “desmarcar tudo” para voltar todos os produtos ao estado pendente, sem apagar a lista. Lucky informa os produtos concluídos.</p>
+    <p><strong>🗑️ Excluir:</strong> diga “excluir arroz” ou “remover leite”. O aplicativo localizará o produto e pedirá confirmação antes de apagar.</p>
+    <p><strong>✅ Confirmar:</strong> diga “confirmar”, “sim” ou “pode”.</p>
+    <p><strong>❌ Cancelar:</strong> diga “cancelar” ou “não”.</p>
+    <small>Fale um comando por vez. O Lucky filtra os comandos de inclusão para aceitar produtos de supermercado (alimentos, bebidas, limpeza, higiene e itens para pets). Para excluir, o nome deve corresponder a um produto da lista.</small>
+  </div>
+</details>
+<button type="button" id="basicListBtn" class="basic-list-btn">🧺 Carregar lista básica de mercado</button>
+<p class="basic-list-note">Inclui alimentos, bebidas, higiene e limpeza. Produtos que já estão na sua lista não serão duplicados.</p>
 <label class="photo-label" for="photo">📷 Fotografar minha lista</label>
 <input id="photo" type="file" accept="image/*" capture="environment">
 <p class="tip">Você também pode fotografar uma lista escrita. Revise os nomes reconhecidos antes de importar.</p>
@@ -32,7 +50,7 @@
 <div class="statusline"><span>Produtos na cesta</span><strong id="counter">0 de 0</strong></div>
 <div class="track"><span id="bar"></span></div>
 </section>
-<div class="list-head"><h2>🛒 Toque no produto quando colocar na cesta</h2><button class="clear" id="clear">Limpar comprados</button></div>
+<div class="list-head"><h2>🛒 Toque no produto quando colocar na cesta</h2><div class="list-actions"><button class="uncheck-all" id="uncheckAll" type="button">↺ Desmarcar tudo</button><button class="clear" id="clear" type="button">Limpar comprados</button></div></div>
 <ul id="items"></ul>
 <div class="empty" id="empty">Sua lista está vazia.<br>Adicione o primeiro produto acima.</div>
 </main>
